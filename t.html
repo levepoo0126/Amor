@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História</title>
+    <!-- Carrega o Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carrega a fonte Inter --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Fundo escuro com um toque de roxo suave */
+            background-color: #0d0a1d; /* Um roxo bem escuro */
+            color: #e0e7ff; /* Um texto mais claro e suave */
+        }
+
+        /* --- Animação dos Corações --- */
+
+        /* Container para os corações */
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Permite clicar através dos corações */
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        /* Keyframes para a animação de flutuação */
+        @keyframes float {
+            0% {
+                transform: translateY(10vh) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Estilo base do coração */
+        .heart {
+            position: absolute;
+            bottom: -50px; /* Começa fora da tela */
+            color: #fca5a5; /* text-red-300, um rosa mais suave */
+            font-size: 1.5rem;
+            animation: float linear infinite;
+            text-shadow: 0 0 8px #fca5a5, 0 0 15px #fca5a5; /* Brilho mais suave */
+        }
+
+        /* --- Carrossel de Fotos Automático --- */
+        
+        .carousel-container {
+            width: 90%;
+            /* max-width: 600px; */ /* Alterado o tamanho máximo */
+            max-width: 384px; /* Mais estreito, ideal para celular (max-w-sm) */
+            margin: 2rem auto;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid #5b21b6; /* Um roxo mais vibrante */
+            aspect-ratio: 4 / 5; /* Adicionada proporção vertical (portrait) */
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 400%; /* 3 imagens + 1 clone para loop */
+            animation: scroll 25s linear infinite; /* Carrossel mais rápido (25s) */
+        }
+
+        .carousel-slide {
+            width: 25%;
+            flex-shrink: 0;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-75%);
+            }
+        }
+
+        /* Estilo para o player de música mais moderno e discreto */
+        .music-player-card {
+            background-color: #2d1a47; /* Um roxo mais escuro para o player */
+            border: 1px solid #4c1d95; /* Borda sutil */
+        }
+
+        .play-pause-btn {
+            background-color: #a78bfa; /* Um roxo claro para o botão */
+            color: #0d0a1d; /* Texto escuro no botão */
+        }
+        .play-pause-btn:hover {
+            background-color: #c4b5fd; /* Roxo mais claro no hover */
+        }
+
+        /* --- NOVO: Estilos da Tela de Entrada (Splash Screen) --- */
+        #splash-screen {
+            position: fixed;
+            inset: 0; /* Cobre a tela inteira */
+            background-color: #0d0a1d; /* Mesmo fundo da página */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100; /* Fica acima de todo o conteúdo */
+            transition: opacity 0.7s ease-out; /* Transição de fade-out */
+        }
+
+        .enter-button {
+            padding: 0.75rem 2rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: white;
+            background-color: #9333ea; /* Roxo vibrante */
+            border-radius: 9999px; /* Totalmente arredondado */
+            border: 2px solid #c084fc; /* Borda roxa clara */
+            text-shadow: 0 0 10px #c084fc;
+            box-shadow: 0 0 20px #9333ea;
+            cursor: pointer;
+            transform: scale(1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .enter-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #c084fc;
+        }
+
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Container dos Corações Flutuantes (Fundo) --><div id="heart-container"></div>
+
+    <!-- NOVO: Tela de Entrada (Splash Screen) --><div id="splash-screen">
+        <button id="enter-button" class="enter-button">
+            clique
+        </button>
+    </div>
+
+    <!-- Conteúdo Principal (Inicialmente oculto pela tela de entrada) --><div id="main-content" class="relative min-h-screen flex flex-col justify-between p-4 md:p-8 z-10">
+        
+        <!-- 1. Player de Música (Topo) --><header class="w-full max-w-md mx-auto p-3 music-player-card rounded-xl shadow-lg flex items-center space-x-3 transition-all duration-300 hover:shadow-xl">
+            <!-- Simulação de thumbnail do YouTube --><img class="w-14 h-14 rounded-md shadow-sm flex-shrink-0 object-cover" src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" alt="Capa da Música">
+            <div class="flex-1 min-w-0">
+                <h2 id="song-title" class="text-md font-semibold text-purple-200 truncate">Never Gonna Give You Up</h2>
+                <p id="song-artist" class="text-sm text-purple-400 truncate">Rick Astley</p>
+            </div>
+            <button id="play-pause-btn" class="p-2 play-pause-btn rounded-full shadow-md transition-transform transform hover:scale-105 flex-shrink-0">
+                <!-- Ícone Play --><svg id="icon-play" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="block">
+                    <path d="M8 5v14l11-7z" />
+                </svg>
+                <!-- Ícone Pause --><svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+            </button>
+            <!-- Player de áudio real (oculto) --><audio id="audio-player" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+        </header>
+
+        <!-- 2. Conteúdo Central (Carrossel e Contador) --><main class="flex-1 flex flex-col items-center justify-center text-center py-10">
+            
+            <!-- Carrossel de Fotos Automático --><div class="carousel-container">
+                <div class="carousel-track">
+                    <!-- Slide 1 --><div class="carousel-slide">
+                        <img src="https://placehold.co/400x500/5b21b6/c4b5fd?text=Nosso+Momento+1" alt="Memória 1">
+                    </div>
+                    <!-- Slide 2 --><div class="carousel-slide">
+                        <img src="https://placehold.co/400x500/9333ea/d8b4fe?text=Nosso+Momento+2" alt="Memória 2">
+                    </div>
+                    <!-- Slide 3 --><div class="carousel-slide">
+                        <img src="https://placehold.co/400x500/c026d3/f0abfc?text=Nosso+Momento+3" alt="Memória 3">
+                    </div>
+                    <!-- Slide 1 (Clone para loop) --><div class="carousel-slide">
+                        <img src="https://placehold.co/400x500/5b21b6/c4b5fd?text=Nosso+Momento+1" alt="Memória 1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Títulos --><h1 class="text-4xl font-bold text-purple-200 mt-8 mb-2">Nossas memórias</h1>
+            <p class="text-lg text-purple-300 mb-4">Estamos juntos há:</p>
+
+            <!-- Contador de Relacionamento --><div class="w-full max-w-lg p-6 bg-purple-900 bg-opacity-70 backdrop-blur-sm rounded-xl shadow-lg border border-purple-700">
+                <!-- O contador dinâmico será preenchido aqui --><p id="counter" class="text-2xl md:text-3xl font-bold text-pink-300 leading-relaxed">
+                    Calculando...
+                </p>
+            </div>
+        </main>
+
+        <!-- 3. Rodapé --><footer class="w-full text-center text-purple-400 text-base p-4">
+            Para todo o sempre.
+        </footer>
+
+    </div>
+
+    <script>
+        /* --- Script dos Corações Flutuantes --- */
+        function createHearts() {
+            const container = document.getElementById('heart-container');
+            const heartCount = 30; // Mais corações!
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤'; 
+                
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.animationDuration = `${Math.random() * 8 + 10}s`; // Animação mais longa (10s a 18s)
+                heart.style.animationDelay = `${Math.random() * 10}s`;
+                heart.style.fontSize = `${Math.random() * 1.5 + 1}rem`; // Tamanhos maiores
+                heart.style.opacity = `${Math.random() * 0.4 + 0.5}`; // Opacidade mais visível
+                
+                container.appendChild(heart);
+            }
+        }
+
+        /* --- Script do Player de Música --- */
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-pause-btn');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+            } else {
+                audio.pause();
+                iconPlay.classList.remove('hidden');
+                iconPause.classList.add('hidden');
+            }
+        });
+
+        /* --- Script do Contador de Relacionamento --- */
+        // !! IMPORTANTE: Defina a data inicial aqui !!
+        // Formato: Ano, Mês (Janeiro = 0, Dezembro = 11), Dia, Hora, Minuto, Segundo
+        const START_DATE = new Date(2024, 2, 10, 21, 30, 0); // Exemplo: 15 de Maio de 2020, 18:30:00
+
+        const counterDisplay = document.getElementById('counter');
+
+        function updateCounter() {
+            const start = START_DATE;
+            const now = new Date();
+
+            if (start > now) {
+                counterDisplay.innerHTML = "Ainda não começamos!";
+                return;
+            }
+
+            // Lógica de cálculo exato
+            let years = now.getFullYear() - start.getFullYear();
+            let months = now.getMonth() - start.getMonth();
+            let days = now.getDate() - start.getDate();
+            let hours = now.getHours() - start.getHours();
+            let minutes = now.getMinutes() - start.getMinutes();
+            let seconds = now.getSeconds() - start.getSeconds();
+
+            // Ajustes de "empréstimo"
+            if (seconds < 0) { minutes--; seconds += 60; }
+            if (minutes < 0) { hours--; minutes += 60; }
+            if (hours < 0) { days--; hours += 24; }
+            if (days < 0) {
+                months--;
+                const daysInLastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                days += daysInLastMonth;
+            }
+            if (months < 0) { years--; months += 12; }
+
+            // Formatação da string de saída
+            const result = [];
+            if (years > 0) result.push(`${years} ${years > 1 ? 'anos' : 'ano'}`);
+            if (months > 0) result.push(`${months} ${months > 1 ? 'meses' : 'mês'}`);
+            if (days > 0) result.push(`${days} ${days > 1 ? 'dias' : 'dia'}`);
+            if (hours > 0) result.push(`${hours} ${hours > 1 ? 'horas' : 'hora'}`);
+            if (minutes > 0) result.push(`${minutes} ${minutes > 1 ? 'minutos' : 'minuto'}`);
+            
+            // Sempre mostrar segundos
+            result.push(`${seconds} ${seconds === 1 ? 'segundo' : 'segundos'}`);
+
+            counterDisplay.innerHTML = result.join(', ');
+        }
+
+        /* --- Inicialização de tudo --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            createHearts();   // Cria os corações
+            updateCounter();     // Chama o contador uma vez
+            setInterval(updateCounter, 1000); // Atualiza o contador a cada segundo
+
+            /* --- NOVO: Lógica da Tela de Entrada --- */
+            const splashScreen = document.getElementById('splash-screen');
+            const enterButton = document.getElementById('enter-button');
+            const mainContent = document.getElementById('main-content');
+            
+            // O conteúdo principal começa invisível (coberto pelo splash)
+            // mas podemos garantir se necessário, embora o z-index já cuide disso.
+
+            enterButton.addEventListener('click', () => {
+                // Inicia a transição de fade-out
+                splashScreen.style.opacity = '0';
+                
+                // Remove a tela de splash do DOM após a transição
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 700); // Deve corresponder ao tempo da transição CSS (0.7s)
+            });
+        });
+    </script>
+</body>
+</html>
